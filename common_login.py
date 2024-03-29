@@ -9,7 +9,7 @@ def login_window():
     ctk.set_default_color_theme("blue")
 
     app = ctk.CTk()
-    app.geometry("1350x700+0+0")
+    app.geometry("1550x900-10-5")
     app.title("LOGIN")
 
     # Database connection configuration
