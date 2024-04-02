@@ -2,6 +2,7 @@ import requests
 import tkinter as tk
 from tkinter import messagebox, ttk
 import mysql.connector
+from tkcalendar import DateEntry
 
 root = tk.Tk()
 
@@ -78,6 +79,9 @@ def save_asset():
     except mysql.connector.Error as e:
         messagebox.showerror("Error", f"Error: {e}")
 
+def save_date():
+    selected_date = cal.get_date()
+    Purchase_date_var.set(selected_date)
 
 # Create the main window
 root.title("Asset Management System")
@@ -109,7 +113,10 @@ tk.Label(frame, text="Number of assets:", width=20, height=4, font=label_font, b
 tk.Entry(frame, textvariable=No_of_assets_var, width=30).grid(row=3, column=1)
 
 tk.Label(frame, text="Purchase Date(yy/mm/dd):", width=20, height=4, font=label_font, bg=label_bg).grid(row=4, column=0, padx=(0, 10))
-tk.Entry(frame, textvariable=Purchase_date_var, width=30).grid(row=4, column=1)
+cal = DateEntry(frame, width=12, background='darkblue', foreground='white', borderwidth=2)
+cal.grid(row=4, column=1)
+cal_button = tk.Button(frame, text="Save Date", command=save_date)
+cal_button.grid(row=5, columnspan=2)
 
 # Save button
 save_button = tk.Button(frame, text="Save Asset", command=save_asset, width=20)
