@@ -9,28 +9,22 @@ class UserClass:
         self.root.config(bg="#E3FDFD")
         self.root.focus_force()
 
-        # Set the font size for the entire window
-        self.root.option_add("*Font", "Roboto")
-
         # Set the window to fullscreen
         self.root.attributes('-fullscreen', True)
 
-        # Search Frame
-        SearchFrame = Frame(self.root, bg="#E3FDFD")
-        SearchFrame.place(relx=0.5, rely=0.05, anchor="n")
-
-        # Search Label
-        search_label = Label(SearchFrame, text="Search User", font=("Goudy old style", 20, "bold"), bg="#E3FDFD")
-        search_label.grid(row=0, column=0, padx=10, pady=5)
+        # Search
+        SearchFrame = LabelFrame(self.root, text="Search User", font=("Goudy old style", 12, "bold"), bd=2,
+                                 relief=GROOVE, bg="antiquewhite")
+        SearchFrame.place(x=250, y=20, width=600, height=70)
 
         # Entry for searching user
-        self.search_entry = Entry(SearchFrame, font=("times new roman", 20), width=40)
-        self.search_entry.grid(row=0, column=1, padx=10, pady=5)
+        self.search_entry = Entry(SearchFrame, font=("times new roman", 15), width=40)  # Changed width to 40
+        self.search_entry.grid(row=0, column=0, padx=10, pady=5)
 
         # Search button
         search_button = Button(SearchFrame, text="Search", font=("times new roman", 14), bg="#03A9F4", fg="white",
                                cursor="hand2", bd=1, relief=RIDGE, command=self.search_data)
-        search_button.grid(row=0, column=2, padx=10, pady=5)
+        search_button.grid(row=0, column=1, padx=10)
 
         # "Go Back" button
         back_button = Button(self.root, text="Back", font=("times new roman", 14), bg="#03A9F4", fg="white",
@@ -51,21 +45,14 @@ class UserClass:
         self.delete_button.bind("<Leave>", lambda event: self.delete_button.config(bg="white", fg="black"))
 
         # Treeview to display data
-        self.style = ttk.Style()
-        self.style.configure("Treeview", font=("Roboto"))  # Set font for Treeview
-        self.tree = ttk.Treeview(self.root, columns=("Name", "Email", "Gender", "D.O.B", "Password"), height=20, show="headings")
-        self.tree.heading("#0", text="User ID")
-        self.tree.heading("Name", text="Name")  # Increase font size for column header
-        self.tree.heading("Email", text="Email")  # Increase font size for column header
-        self.tree.heading("Gender", text="Gender")  # Increase font size for column header
-        self.tree.heading("D.O.B", text="D.O.B")  # Increase font size for column header
-        self.tree.heading("Password", text="Password")  # Increase font size for column header
-        self.tree.place(relx=0.5, rely=0.2, anchor="n")
-
-        # Add lines between columns
-        for col in self.tree["columns"]:
-            self.tree.heading(col, text=col, command=lambda c=col: self.sort_column(c, False))
-            self.tree.column(col, width=180, stretch=True)  # Increase column width
+        self.tree = ttk.Treeview(self.root, columns=("Name", "Email", "Gender", "D.O.B", "Password"), height=15)
+        self.tree.heading("#0", text="User ID")  # Set empty string for the first column
+        self.tree.heading("Name", text="Name")
+        self.tree.heading("Email", text="Email")
+        self.tree.heading("Gender", text="Gender")
+        self.tree.heading("D.O.B", text="D.O.B")
+        self.tree.heading("Password", text="Password")
+        self.tree.place(x=50, y=120)
 
         # Fetch data from MySQL database
         self.fetch_data()
@@ -113,7 +100,7 @@ class UserClass:
         connection.close()
 
     def go_back(self):
-        self.root.destroy()
+        self.root.destroy()  # Close the current window
 
     def delete_selected(self):
         selected_item = self.tree.selection()
